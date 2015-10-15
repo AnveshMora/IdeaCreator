@@ -2,7 +2,6 @@
 <%@page import="java.util.List"%>
 <%@page import="java.util.Map"%>
 <%@page import="com.ideacreator.user.UserInfo"%>
-<%@page import="org.apache.catalina.User"%>
 <%@page import="com.ideacreator.ideadetails.IdeaDetailDAO"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
@@ -15,8 +14,7 @@
 	<section class="content-header">
 	<h1>Dashboard</h1>
 	<ol class="breadcrumb">
-		<li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-		<li class="active">Dashboard</li>
+		<li><a><i class="fa fa-dashboard"></i> Home</a></li>
 	</ol>
 	</section>
 
@@ -61,8 +59,7 @@
 				<span class="info-box-icon bg-green" style="background-image: url('/IdeaCreator/dist/img/comments.png'); background-position: center;"><i
 					class="ion"></i></span>
 				<div class="info-box-content">
-					<span class="info-box-text" >Coments </span><small>(*for all
-						Ideas Posted)</small> <span class="info-box-number"><%= dashBoardCounts.containsKey("comments")?dashBoardCounts.get("comments"):"N/A" %></span>
+					<span class="info-box-text" >Coments </span> <span class="info-box-number"><%= dashBoardCounts.containsKey("comments")?dashBoardCounts.get("comments"):"N/A" %></span>
 				</div>
 				<!-- /.info-box-content -->
 			</div>

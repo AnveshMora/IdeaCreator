@@ -221,17 +221,22 @@ function searchIdea() {
 				<!-- sidebar menu: : style can be found in sidebar.less -->
 				<ul class="sidebar-menu">
 					<li class="header">MAIN NAVIGATION</li>
-					<li class="active treeview"><a href="/IdeaCreator/User/homepage.jsp"> <i
+					<%String uri=request.getRequestURI();
+					uri=uri.substring(uri.lastIndexOf('/'));%>
+					<li class="<%if(uri.equals("/homepage.jsp")) out.print("active "); %>treeview"><a href="/IdeaCreator/User/homepage.jsp"> <i
 							class="fa fa-dashboard"></i> <span>Dashboard</span>
 					</a></li>
-					<li class="treeview"><a href="/IdeaCreator/User/newIdea.jsp"> <i
+					<li class="<%if(uri.equals("/newIdea.jsp")) out.print("active "); %>treeview"><a href="/IdeaCreator/User/newIdea.jsp"> <i
 							class="fa fa-dashboard"></i> <span>New Idea</span>
 					</a></li>
-					<li class="treeview"><a href="/IdeaCreator/User/MyIdeas.jsp"> <i
+					<li class="<%if(uri.equals("/MyIdeas.jsp")) out.print("active "); %>treeview"><a href="/IdeaCreator/User/MyIdeas.jsp"> <i
 							class="fa fa-dashboard"></i> <span>My Ideas</span>
 					</a></li>
-					<li class="treeview"><a href="/IdeaCreator/User/searchIdea.jsp"> <i
+					<li class="<%if(uri.equals("/searchIdea.jsp")) out.print("active "); %>treeview"><a href="/IdeaCreator/User/searchIdea.jsp"> <i
 							class="fa fa-dashboard"></i> <span>Search Idea</span>
+					</a></li>
+					<li class="<%if(uri.equals("/viewAllIdeas.jsp")) out.print("active "); %>treeview"><a href="/IdeaCreator/User/viewAllIdeas.jsp"> <i
+							class="fa fa-dashboard"></i> <span>View All Ideas</span>
 					</a></li>
 				</ul>
 			</section>
