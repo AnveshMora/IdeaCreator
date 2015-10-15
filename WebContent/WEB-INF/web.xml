@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	id="WebApp_ID" version="2.5">
+	<display-name>IdeaCreator</display-name>
+	<welcome-file-list>
+		<welcome-file>login.jsp</welcome-file>
+	</welcome-file-list>
+	<servlet>
+		<servlet-name>UploadServlet</servlet-name>
+		<servlet-class>com.ideacreator.bo.attachments.UploadServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>UploadServlet</servlet-name>
+		<url-pattern>/User/UploadServlet</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<description></description>
+		<display-name>LoggerInitializer</display-name>
+		<servlet-name>LoggerInitializer</servlet-name>
+		<servlet-class>com.ideacreator.utilservlets.LoggerInitializer</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>LoggerInitializer</servlet-name>
+		<url-pattern>/LoggerInitializer</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>DownloadServlet</servlet-name>
+		<servlet-class>com.ideacreator.bo.attachments.DownloadServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>DownloadServlet</servlet-name>
+		<url-pattern>/User/DownloadAttachment</url-pattern>
+	</servlet-mapping>
+	<context-param>
+		<description>Location to store uploaded file</description>
+		<param-name>file-upload</param-name>
+		<param-value>
+         C:\Server\webapps\data\
+     </param-value>
+	</context-param>
+
+	<servlet>
+		<servlet-name>LoginController</servlet-name>
+		<servlet-class>com.ideacreator.login.LoginController</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>LoginController</servlet-name>
+		<url-pattern>/LoginController</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>LogOutController</servlet-name>
+		<servlet-class>com.ideacreator.login.LogOutController</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>LogOutController</servlet-name>
+		<url-pattern>/LogOutController</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>IdeaController</servlet-name>
+		<servlet-class>com.ideacreator.idea.IdeaController</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>IdeaController</servlet-name>
+		<url-pattern>/User/IdeaController</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>SearchController</servlet-name>
+		<servlet-class>com.ideacreator.search.user.SearchController</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>SearchController</servlet-name>
+		<url-pattern>/User/SearchController</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>ViewIdeaController</servlet-name>
+		<servlet-class>com.ideacreator.idea.viewidea.ViewIdeaController</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>ViewIdeaController</servlet-name>
+		<url-pattern>/User/ViewIdeaController</url-pattern>
+	</servlet-mapping>
+	
+	<filter>
+		<filter-name>LoginFilter</filter-name>
+		<filter-class>com.ideacreator.login.filter.LoginFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>LoginFilter</filter-name>
+		<url-pattern>/User/*</url-pattern>
+	</filter-mapping>
+</web-app>

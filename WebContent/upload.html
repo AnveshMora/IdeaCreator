@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Upload</title>
+<script>
+	function myFunction() {
+		var x = document.getElementById("myFile");
+		var formData = new FormData();
+
+		var txt = "";
+		if ('files' in x) {
+			if (x.files.length == 0) {
+				alert("Select one or more files.");
+			} else {
+				for (var i = 0; i < x.files.length; i++) {
+
+					var file = x.files[i];
+					var xp = x.files[i];
+					var formData = new FormData();
+					formData.append("myFile", xp);
+					if ('name' in file) {
+						txt += "<a href=\"DownloadAttachment?fileName=";
+						txt += file.name;
+						txt += "\">" + file.name + "</a><br>";
+						
+						var xhttp = new XMLHttpRequest();
+						xhttp.addEventListener('progress', function(e) {
+							var done = e.position || e.loaded, total = e.totalSize || e.total;
+							console.log('xhr progress: '
+									+ (Math.floor(done / total * 1000) / 10) + '%');
+							document.getElementById("demo").innerHTML = 'Progress: '
+									+ (Math.floor(done / total * 1000) / 10) + '%';
+						}, false);
+						if (xhttp.upload) {
+							xhttp.upload.onprogress = function(e) {
+								var done = e.position || e.loaded, total = e.totalSize
+										|| e.total;
+								document.getElementById("demo").innerHTML = 'Progress: '
+										+ (Math.floor(done / total * 1000) / 10) + '%';
+								console.log('xhr.upload progress: ' + done + ' / ' + total
+										+ ' = ' + (Math.floor(done / total * 1000) / 10) + '%');
+							};
+						}
+						xhttp.onreadystatechange = function(e) {
+							if (4 == this.readyState) {
+								document.getElementById("attachments").innerHTML= document.getElementById("attachments").innerHTML +
+								this.responseText;
+								document.getElementById("demo").innerHTML = 'Upload Complete!!';
+								console.log([ 'xhr upload complete', e ]);
+							}
+						};
+						/*     xhttp.onreadystatechange = function() {
+						 if (xhttp.readyState == 4 && xhttp.status == 200) {
+						 document.getElementById("demo").innerHTML = xhttp.responseText;
+						 document.getElementById("demo").innerHTML = txt;
+						 }
+						 xhr.setRequestHeader("Content-Type","multipart/form-data");
+						 } */
+
+						xhttp.open("POST", "UploadServlet", true);
+						xhttp.send(formData);
+					}
+				}
+			}
+		}
+
+		
+	}
+</script>
+<style type="text/css">
+.attachment {
+	position: relative;
+	width: 120px;
+	height: 120px;
+	border-style: solid;
+	border-width: 2px;
+	border-color: green;
+	float: left;
+	margin: 2px 5px;
+	background-image: url("dist/img/file-temp.png");
+	background-repeat: no-repeat;
+}
+
+.preattachment {
+	position: relative;
+	width: 120px;
+	height: 120px;
+	border-style: solid;
+	border-width: 2px;
+	border-color: green;
+	float: left;
+	margin: 2px 5px;
+	text-indent:
+}
+
+.attachment-failure {
+	position: relative;
+	width: 120px;
+	height: 120px;
+	border-style: solid;
+	border-width: 2px;
+	border-color: red;
+	float: left;
+	margin: 2px 5px;
+	text-align: center;
+	word-wrap: break-word;
+}
+
+.attachment:hover .overlay {
+	background: gray transparent;
+	opacity: 1;
+	display: inherit;
+}
+
+button {
+	display: block;
+	opacity: 1;
+	border-style: groove;
+		margin: 10% 0% 0% 25%;
+	}
+
+.overlay {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 120px;
+	height: 120px;
+	background: gray;
+	opacity: 1;
+	display: none
+}
+
+p {
+	margin-top: 50px;
+	text-align: center;
+	word-wrap: break-word;
+}
+</style>
+</head>
+<body>
+	<h3>File Upload:</h3>
+	Select a file to upload:
+	<br />
+	<input type="file" id="myFile" multiple size="50"
+		onchange="myFunction()">
+
+	<p id="demo"></p>
+
+
+
+	<p>
+		<strong>Tip:</strong> Use the Control or the Shift key to select
+		multiple files.
+	</p>
+	<div id="attachments"/>
+	
+
+</body>
+</html>

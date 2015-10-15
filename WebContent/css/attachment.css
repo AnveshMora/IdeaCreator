@@ -1,0 +1,35 @@
+.attachment {
+	position: relative;
+	width: 120px;
+	height: 120px;
+	border-style: solid;
+	border-width: 2px;
+	border-color: green;
+	float: left;
+	margin: 2px 5px;
+	background-image: url("dist/img/file-temp.png");
+	background-repeat: no-repeat;
+}
+
+.attachment:hover .overlay {
+	background: gray transparent;
+	opacity: 1;
+	display: inherit;
+}
+
+.overlay {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 120px;
+	height: 120px;
+	background: gray;
+	opacity: 1;
+	display: none
+}
+
+p {
+	margin-top: 50px;
+	text-align: center;
+	word-wrap: break-word;
+}
