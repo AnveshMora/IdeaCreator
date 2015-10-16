@@ -8,6 +8,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import com.ideacreator.user.UserInfo;
 
 public class DownloadServlet extends HttpServlet {
 	private String filePath;
@@ -21,10 +24,12 @@ public class DownloadServlet extends HttpServlet {
 		response.setContentType("text/html");
 		PrintWriter out = response.getWriter();
 		String filename = request.getParameter("fileName").toString();
+		HttpSession session= request.getSession();
+		UserInfo user = (UserInfo)session.getAttribute("loggedInUser");
 		response.setContentType("APPLICATION/OCTET-STREAM");
 		response.setHeader("Content-Disposition", "attachment; filename=\"" + filename + "\"");
 
-		FileInputStream fileInputStream = new FileInputStream(filePath + filename);
+		FileInputStream fileInputStream = new FileInputStream(filePath + user.getUserId()+filename);
 
 		int i;
 		while ((i = fileInputStream.read()) != -1) {

@@ -120,8 +120,7 @@ public class IdeaDAO {
 			st.execute();
 
 			ResultSet rs = st.getResultSet();
-			if (rs.getFetchSize() > 0) {
-					rs.next();
+			if (rs.next()) {
 					return rs.getInt("flag");
 				}
 		} catch (SQLException e) {

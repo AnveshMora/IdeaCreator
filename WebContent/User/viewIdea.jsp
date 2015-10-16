@@ -30,7 +30,7 @@
 		xhttp.onreadystatechange = function() {
 			if (xhttp.readyState == 4 && xhttp.status == 200) {
 				document.getElementById("voteCount").innerHTML = voteCount + 1;
-				document.getElementById("ideaUpVote").remove();
+				document.getElementById("ideaUpVote").disabled = true;
 				this.style.visibility = false;
 			}
 		}
@@ -59,6 +59,7 @@
 	function addComment() {
 		var xhttp = new XMLHttpRequest();
 		var formData = new FormData();
+		var userComment=document.getElementById("userComment");
 		formData.append("comment", userComment);
 		xhttp.onreadystatechange = function() {
 			if (xhttp.readyState == 4 && xhttp.status == 200) {

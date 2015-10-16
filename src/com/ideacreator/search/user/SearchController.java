@@ -27,25 +27,25 @@ public class SearchController extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-			UserDAO userInfo = new UserDAO();
-			IdeaDetailDAO ideas = new IdeaDetailDAO();
-			List<IdeaDetail> ideaList=new ArrayList<IdeaDetail>();
-				ideaList=ideas.getIdeas(req);
-			String response = "";
-			if (ideaList.size() > 0)
-				response += "<table class=\"table table-striped\"> <thead>" + "<tr>" + "<th>S.No</th>" + "<th>Idea</th>"
-						+ "<th>Description</th>" + "</tr>" + "</thead><tbody>";
-			for (IdeaDetail ideaDetail : ideaList) {
+		UserDAO userInfo = new UserDAO();
+		IdeaDetailDAO ideas = new IdeaDetailDAO();
+		List<IdeaDetail> ideaList = new ArrayList<IdeaDetail>();
+		ideaList = ideas.getIdeas(req);
+		String response = "";
+		if (ideaList.size() > 0)
+			response += "<table class=\"table table-striped\"> <thead>" + "<tr>" + "<th>S.No</th>" + "<th>Idea</th>"
+					+ "<th>Description</th>" + "</tr>" + "</thead><tbody>";
+		for (IdeaDetail ideaDetail : ideaList) {
 
-				response += "" + "<tr>" + "<td><a href=\"/IdeaCreator/User/viewIdea.jsp?viewId=" + ideaDetail.getIdea_Id()
-						+ "\">" + ideaDetail.getIdea_Id() + "</a></td>" + "<td>" + ideaDetail.getTitle() + "</td>"
-						+ "<td>" + ideaDetail.getDescritpion() + "</td>" + "</tr>";
-				// userNameList.add(rs.getString("user_name"));
-			}
-			if (!response.isEmpty()) {
-				response += "</tbody></table>";
-			}
-			resp.getWriter().println(response);
+			response += "" + "<tr>" + "<td>" + ideaDetail.getIdea_Id() + "</td>"
+					+ "<td> <a href=\"/IdeaCreator/User/viewIdea.jsp?viewId=" + ideaDetail.getIdea_Id() + "\" >"
+					+ ideaDetail.getTitle() + "</a></td>" + "<td>" + ideaDetail.getDescritpion() + "</td>" + "</tr>";
+			// userNameList.add(rs.getString("user_name"));
+		}
+		if (!response.isEmpty()) {
+			response += "</tbody></table>";
+		}
+		resp.getWriter().println(response);
 
 	}
 

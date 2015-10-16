@@ -118,7 +118,8 @@
 		<li class="active">New Idea</li>
 	</ol>
 	</section>
-	<form action="/IdeaCreator/User/IdeaController" method="post" onsubmit="return ideaValidation();">
+	<form action="/IdeaCreator/User/IdeaController" method="post"
+		onsubmit="return ideaValidation();">
 		<!-- Main content -->
 		<section class="content"> <!-- title row -->
 		<div class="box">
@@ -180,7 +181,29 @@
 		<div class="row">
 			<div class="col-xs-12">
 				<button onclick="return ideaValidation()">Save</button>
-				<button onclick="return ideaValidation()">Submit For Review</button>
+				<button data-toggle="modal" data-target="#reviewerDialog"
+					onclick="ideaValidation()">Submit For Review</button>
+				<!-- Modal -->
+				<div id="reviewerDialog" class="modal fade" role="dialog">
+					<div class="modal-dialog">
+
+						<!-- Modal content-->
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+								<h4 class="modal-title">Modal Header</h4>
+							</div>
+							<div class="modal-body">
+								<input type="text" id="addReviewIds" paceholder="(Optional)Enter Additional Peer Reviewers Name" class="form-control"/>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default"
+									data-dismiss="modal">Close</button>
+							</div>
+						</div>
+
+					</div>
+				</div>
 			</div>
 			<!-- /.col -->
 		</div>

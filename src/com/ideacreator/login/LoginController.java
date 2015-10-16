@@ -9,13 +9,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.catalina.connector.Request;
-
 import com.ideacreator.user.UserDAO;
 import com.ideacreator.user.UserInfo;
 	
 public class LoginController extends HttpServlet {
 
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		doPost(req, resp);
+	}
 	
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// TODO Auto-generated method stub
@@ -27,10 +30,6 @@ public class LoginController extends HttpServlet {
 		if(authenticator.validateLogin(user)){
 			UserInfo userDetails=authenticator.getUserDetails(user.getUserName());
 			session.setAttribute("loggedInUser", userDetails);
-			/*session.setAttribute("loggedInUser", userDetails.getUserName());
-			session.setAttribute("emailId", userDetails.getEmailId());
-			session.setAttribute("roleId", userDetails.getRoleId());
-			session.setAttribute("userId", userDetails.getUserId());*/
 			RequestDispatcher reqDispatch=req.getRequestDispatcher("User/homepage.jsp");
 			reqDispatch.forward(req, resp);
 			return;

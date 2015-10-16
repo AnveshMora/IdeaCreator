@@ -88,4 +88,5 @@ public class DataBaseConstants {
 	public static final String QUERY_RETRIEVE_IDEA_FLAG ="select flag from idea_flags where user_id=? and idea_id=?";
 	
 	public static final String QUERY_IDEA_FLAG_TOGGLE ="update idea_flags set flag=? where user_id=? and idea_id=?";
+	public static final String QUERY_UPDATE_IDEA = "update idea set title=?, description=? where user_id=? and idea_id=?";
 }

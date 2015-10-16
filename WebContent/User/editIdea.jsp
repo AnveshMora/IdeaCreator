@@ -1,3 +1,4 @@
+<%@page import="com.ideacreator.idea.IdeaDAO"%>
 <%@page import="java.util.List"%>
 <%@page import="com.ideacreator.idea.attachment.AttachmentDAO"%>
 <%@page import="com.ideacreator.user.UserInfo"%>
@@ -12,11 +13,12 @@
 	IdeaDetailDAO obj = new IdeaDetailDAO();
 	int id = Integer.parseInt(request.getParameter("viewId"));
 	IdeaDetail detail = obj.getIdea(id);
+	IdeaDetail detail2 =(IdeaDetail)session.getAttribute("ideaDetail");
 	session.setAttribute("ideaDetail", detail);
 	UserInfo user = (UserInfo) session.getAttribute("loggedInUser");
 	AttachmentDAO attachments = new AttachmentDAO();
 	List<String> fileNames = attachments.getAttachments(id);
-%>	
+%>
 <script>
 	function myFunction() {
 		var x = document.getElementById("myFile");
@@ -73,10 +75,10 @@
 							};
 						}
 						xhttp.onreadystatechange = function(e) {
-							if (4 == this.readyState) {
+							if (xhttp.readyState == 4 && xhttp.status == 200) {
 								document.getElementById("attachments").innerHTML = document
 										.getElementById("attachments").innerHTML
-										+ this.responseText;
+										+ xhttp.responseText;
 								document.getElementById("progress").innerHTML = 'Upload Complete!!';
 								console.log([ 'xhr upload complete', e ]);
 							}
@@ -119,20 +121,26 @@
 		}
 		return false;
 	}
+
+	function callAttachment() {
+		var element = document.getElementById('myFile');
+		element.click();
+	}
 </script>
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
 	<!-- Content Header (Page header) -->
 	<section class="content-header">
 	<h1>
-		Edit Idea <small>#<%=id %></small>
+		Edit Idea <small>#<%=id%></small>
 	</h1>
 	<ol class="breadcrumb">
 		<li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
 		<li class="active">Edit Idea</li>
 	</ol>
 	</section>
-	<form action="/IdeaCreator/User/IdeaController" method="post" onsubmit="return ideaValidation();">
+	<form action="/IdeaCreator/User/IdeaController" method="post"
+		onsubmit="return ideaValidation();">
 		<!-- Main content -->
 		<section class="content"> <!-- title row -->
 		<div class="box">
@@ -151,11 +159,12 @@
 						<div class="alert alert-warning" id="alert-validation"
 							style="display: none; font-style: normal;"></div>
 						<input type="text" name="qTitle" id="qTitle" class="form-control"
-							placeholder="Title" width="100%" value=<%=detail.getTitle() %> onblur="ideaValidation()">
-						<br />
+							placeholder="Title" width="100%" value=<%=detail.getTitle()%>
+							onblur="ideaValidation()"> <br />
 						<textarea name="qDescription" id="qDescription"
 							class="form-control" rows='4' cols='50' size='75px'
-							placeholder="Description" value=<%=detail.getDescritpion() %> onblur="ideaValidation()"></textarea>
+							placeholder="Description" 
+							onblur="ideaValidation()"><%=detail.getDescritpion()%></textarea>
 
 					</div>
 
@@ -177,12 +186,41 @@
 				<!-- info row -->
 
 				<div class="row">
-					<div class="col">
-						<input type="file" id="myFile" multiple size="50"
-							onchange="myFunction()">
-
+					<div class="col-md-6">
+						<input type="file" id="myFile" size="50" onchange="myFunction()"
+							style="visibility: hidden;" multiple>
+						<button class="btn btn-primary" id="ideaUpVote"
+							onclick="return callAttachment()">
+							<b>+</b>
+						</button>
+						<input type="hidden" name="edited" value="true"/>
 						<p id="progress"></p>
-						<div id="attachments" />
+						<%
+							if (fileNames.isEmpty()) {
+								out.print("No Attachments Found!");
+							} else {
+								for (String fileName : fileNames) {
+									int index = fileName.lastIndexOf(".");
+									String displayFileName = fileName;
+									String tempFileExt = "";
+									if (index > 0) {
+										displayFileName = (fileName.substring(0, fileName.lastIndexOf(".")));
+										displayFileName = displayFileName.replaceAll(Integer.toString(id), "");
+										displayFileName = displayFileName.length() > 25 ? displayFileName.substring(0, 25).concat("...")
+												: displayFileName;
+										tempFileExt = fileName.substring(fileName.lastIndexOf("."));
+									}
+									out.println("<div class=\"attachment\" title=\"Click to Download the Attachment!\">" + "<p>"
+											+ displayFileName + tempFileExt + "</p>" + "<div class=\"overlay\">"
+											+ "<a href=\"DownloadAttachment?fileName=" + fileName
+											+ "\" style\"text-decoration: none;color:back;\""
+											+ "<button class=\".btn glyphicon glyphicon-download-alt\" title=\"Preview/Delete Attachment\" style=\"margin-left:20px; margin-top:20px\"></button></a>"
+											+ "<button class=\".btn glyphicon glyphicon-trash\" style=\"margin-left:20px; margin-top:20px\" title=\"Delete Attachment\"></button>"
+											+ "</div>" + "</div>");
+
+								}
+							}
+						%>
 
 					</div>
 					<!-- /.col -->
@@ -193,8 +231,15 @@
 		<section class="invoice">
 		<div class="row">
 			<div class="col-xs-12">
-				<button onclick="return ideaValidation()">Save</button>
-				<button onclick="return ideaValidation()">Submit For Review</button>
+				<%
+					if (detail.getIdea_state().equalsIgnoreCase("Saved")) {
+						out.println("<button class=\"btn btn-primary\" onclick=\"return ideaValidation()\">Save</button>");
+						out.println(
+								"<button class=\"btn btn-primary\" onclick=\"return ideaValidation()\">Submit For Review</button>");
+					} else {
+						out.println("<button class=\"btn btn-primary\" onclick=\"return ideaValidation()\">Update</button>");
+					}
+				%>
 			</div>
 			<!-- /.col -->
 		</div>
