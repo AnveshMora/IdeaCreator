@@ -29,6 +29,8 @@ public class DataBaseConstants {
 	public static final String QUERY_USER_VALIDATION = "select * from user_info where user_name=? and password=?";
 
 	public static final String QUERY_USER_DETAILS = "select * from user_info where user_name=? ";
+	
+	public static final String QUERY_ALL_USER_DETAILS = "select user_id,user_name from user_info";
 
 	public static final String QUERY_IDEA_DETAIL = "select * from idea, idea_states where idea.idea_id=? and idea.idea_state_id= idea_states.idea_state_id";
 
@@ -53,6 +55,8 @@ public class DataBaseConstants {
 			+ "idea.idea_state_id= idea_states.idea_state_id and idea.idea_state_id not in (1,7)";
 
 	public static final String QUERY_ADD_IDEA = "insert into idea(idea_id,user_id,title,description,posted_on,idea_state_id) values(IDEA_SEQ.nextval,?,?,?,sysdate,?)";
+	
+	public static final String QUERY_DELETE_IDEA = "delete from idea where idea_id=?";
 
 	public static final String QUERY_USERNAME_INFO = "select user_id, user_name from user_info where user_id <> ?";
 
@@ -89,4 +93,7 @@ public class DataBaseConstants {
 	
 	public static final String QUERY_IDEA_FLAG_TOGGLE ="update idea_flags set flag=? where user_id=? and idea_id=?";
 	public static final String QUERY_UPDATE_IDEA = "update idea set title=?, description=? where user_id=? and idea_id=?";
+	
+	public static final String QUERY_FLAGGED_IDEAS= "select idea.idea_id,idea.title,idea.description from idea, idea_flags where idea_flags.user_id=? and "+
+													"idea.user_id=idea_flags.user_id and idea.idea_id= idea_flags.idea_id";
 }

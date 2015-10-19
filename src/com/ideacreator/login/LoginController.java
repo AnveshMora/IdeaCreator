@@ -30,8 +30,9 @@ public class LoginController extends HttpServlet {
 		if(authenticator.validateLogin(user)){
 			UserInfo userDetails=authenticator.getUserDetails(user.getUserName());
 			session.setAttribute("loggedInUser", userDetails);
-			RequestDispatcher reqDispatch=req.getRequestDispatcher("User/homepage.jsp");
-			reqDispatch.forward(req, resp);
+			resp.sendRedirect("User/homepage.jsp");
+//			RequestDispatcher reqDispatch=req.getRequestDispatcher("User/homepage.jsp");
+//			reqDispatch.forward(req, resp);
 			return;
 		}else{
 			session.setAttribute("message", "Invalid login");

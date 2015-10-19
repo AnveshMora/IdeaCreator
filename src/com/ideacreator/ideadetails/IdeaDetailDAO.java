@@ -40,8 +40,9 @@ public class IdeaDetailDAO {
 			PreparedStatement st = con.prepareStatement(DataBaseConstants.QUERY_IDEA_DETAIL);
 			st.setInt(1, ideaId);
 			ResultSet rs = st.executeQuery();
-			IdeaDetail idea = new IdeaDetail();
-			while (rs.next()) {
+			IdeaDetail idea = null;
+			if (rs.next()) {
+				idea=new IdeaDetail();
 				idea.setIdea_Id(rs.getInt("idea_id"));
 				idea.setTitle(rs.getString("title"));
 				idea.setDescritpion(rs.getString("description"));
@@ -75,6 +76,8 @@ public class IdeaDetailDAO {
 		String desc = "";
 		String comment = "";
 		String user = "";
+		String status=null;
+		String fromDate = null, toDate= null; 
 		try {
 			fileItems = upload.parseRequest(request);
 			Iterator i = fileItems.iterator();
@@ -93,6 +96,16 @@ public class IdeaDetailDAO {
 					if (fi.getFieldName().equals("user")) {
 						user = fi.getString();
 					}
+					if (fi.getFieldName().equals("fromDate")) {
+						fromDate = fi.getString();
+					}
+					if (fi.getFieldName().equals("toDate")) {
+						toDate = fi.getString();
+					}
+					if (fi.getFieldName().equals("status")) {
+						status = fi.getString();
+					}
+					
 				}
 			}
 		} catch (FileUploadException e) {
@@ -116,7 +129,7 @@ public class IdeaDetailDAO {
 		try {
 			driver.createConnection();
 			con = driver.getConnection();
-			StringBuffer query = new StringBuffer("select * from idea");
+			StringBuffer query = new StringBuffer("select * from idea, idea_states");
 			if (title != null) {
 				query.append(" where (lower(title) like ?");
 			}
@@ -135,7 +148,19 @@ public class IdeaDetailDAO {
 
 			}
 			query.append(" ) ");
-
+			if(fromDate!=null && toDate!=null){
+				query.append("and (posted_on between "+fromDate+" and "+toDate+")");
+			}
+			else if(fromDate!=null){
+				query.append("and (posted_on > "+fromDate+")");
+			}
+			else if( toDate!=null){
+				query.append("and (posted_on < "+toDate+")");
+			}
+			if(status!=null){
+				query.append("and idea_states.state='"+status+"'");
+			}
+			query.append(" and idea.idea_state_id= idea_states.idea_state_id order by idea.posted_on desc");
 			/*
 			 * if(comment!=null){ query.append(" and lower(comment)=\'%"
 			 * +comment.toLowerCase().trim()+"%\'"); }
@@ -175,7 +200,7 @@ public class IdeaDetailDAO {
 				idea.setIdea_Id(rs.getInt("idea_id"));
 				idea.setTitle(rs.getString("title"));
 				idea.setDescritpion(rs.getString("description"));
-				idea.setIdea_state(rs.getString("idea_state_id"));
+				idea.setIdea_state(rs.getString("state"));
 				idea.setPostedUserId(rs.getInt("user_id"));
 				idea.setPostedOn(rs.getString("posted_on"));
 				ideasList.add(idea);
@@ -408,5 +433,64 @@ public class IdeaDetailDAO {
 
 		return updatedCount;
 
+	}
+	
+	
+	public int deleteIdea(int ideaId) {
+		DataManager driver = new DataManager();
+		Connection con = null;
+		try {
+			driver.createConnection();
+			con = driver.getConnection();
+			PreparedStatement st = con.prepareStatement(DataBaseConstants.QUERY_DELETE_IDEA);
+			st.setInt(1, ideaId);
+			if (st.executeUpdate() > 0) {
+					return st.getFetchSize();
+				}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			if (con != null) {
+				try {
+					con.close();
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		}
+
+		return -1;
+	}
+	
+	public static List<IdeaDetail> getFlaggedIdeas(int userId) {
+		DataManager driver = new DataManager();
+		Connection con = null;
+		List<IdeaDetail> ideasList = new  ArrayList<IdeaDetail>();
+		IdeaDetail idea= null;
+		try {
+			driver.createConnection();
+			con = driver.getConnection();
+			PreparedStatement st = con.prepareStatement(DataBaseConstants.QUERY_FLAGGED_IDEAS);
+			st.setInt(1, userId);
+			ResultSet rs = st.executeQuery();
+			while (rs.next()) {
+				idea= new IdeaDetail();
+				idea.setIdea_Id(rs.getInt("idea_id"));
+				idea.setTitle(rs.getString("title"));
+				idea.setDescritpion(rs.getString("description"));
+				ideasList.add(idea);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			if (con != null) {
+				try {
+					con.close();
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		}
+		return ideasList;
 	}
 }

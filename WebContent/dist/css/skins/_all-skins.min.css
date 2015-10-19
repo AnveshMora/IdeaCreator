@@ -1422,7 +1422,7 @@
 }
 
 .skin-yellow .main-header .navbar {
-	background-color: #f39c12
+	background-color: #646669
 }
 
 .skin-yellow .main-header .navbar .nav>li>a {
@@ -1451,7 +1451,7 @@
 }
 
 .skin-yellow .main-header .navbar .sidebar-toggle:hover {
-	background-color: #e08e0b
+	background-color: #474B50
 }
 
 @media ( max-width :767px) {
@@ -1467,17 +1467,17 @@
 }
 
 .skin-yellow .main-header .logo {
-	background-color: #e08e0b;
-	color: #fff;
+	background-color: #F7F7F7;
+	color: #00a5d9;
 	border-bottom: 0 solid transparent
 }
 
 .skin-yellow .main-header .logo:hover {
-	background-color: #db8b0b
+	background-color: #EAEAEA;
 }
 
 .skin-yellow .main-header li.user-header {
-	background-color: #f39c12
+	background-color: #646669;
 }
 
 .skin-yellow .content-header {

@@ -106,7 +106,7 @@ public class ViewIdeaController extends HttpServlet {
 				out.print("<div class=\"bubble\">" + "<div class=\"bubble-heading\">" + "<strong>"
 						+ user.getUserName() + "</strong></div>");
 				//out.print("<span class=\"text-muted\">commented 5 days ago</span>");
-				out.print("<p class=\"comment\" align=\"left\">" + fieldvalue + "</p></div>");
+				out.print("<p class=\"comment\" align=\"left\">" + fieldvalue.toString() + "</p></div>");
 			}
 		}
 		

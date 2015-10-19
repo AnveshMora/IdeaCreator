@@ -27,11 +27,12 @@
 		var xhttp = new XMLHttpRequest();
 		var formData = new FormData();
 		formData.append("upVote", 1);
+		var voteCount = document.getElementById("voteCount").innerHTML;
 		xhttp.onreadystatechange = function() {
 			if (xhttp.readyState == 4 && xhttp.status == 200) {
 				document.getElementById("voteCount").innerHTML = voteCount + 1;
 				document.getElementById("ideaUpVote").disabled = true;
-				this.style.visibility = false;
+				location.reload(true);
 			}
 		}
 
@@ -42,7 +43,7 @@
 	function ideaStateChange() {
 		var xhttp = new XMLHttpRequest();
 		var formData = new FormData();
-		var changedState = document.getElementById("stateChangeButton").innerText;
+		var changedState = document.getElementById("stateChangeButton").value;
 		var currentState = document.getElementById("currentState").innerText;
 		formData.append("state", changedState.trim());
 		formData.append("currentState", currentState);
@@ -59,11 +60,12 @@
 	function addComment() {
 		var xhttp = new XMLHttpRequest();
 		var formData = new FormData();
-		var userComment=document.getElementById("userComment");
+		var userComment = document.getElementById("userComment").value;
 		formData.append("comment", userComment);
 		xhttp.onreadystatechange = function() {
 			if (xhttp.readyState == 4 && xhttp.status == 200) {
 				document.getElementById("userComment").innerHTML = xhttp.responseText;
+				location.reload(true);
 			}
 		}
 		xhttp.open("POST", "ViewIdeaController", true);
@@ -107,36 +109,42 @@
 
 		<%
 			if (UserDAO.isReviewer(user)) {
-				out.print(
-						"<button class=\"pull-right btn btn-primary\" style=\"margin-top:-10px;\" onclick=\"ideaStateChange()\">Go</button>");
-				out.print("<div class=\"dropdown pull-right\" style=\"margin-top:-10px;\">"
-						+ "<button class=\"btn btn-primary dropdown-toggle\" type=\"button\" data-toggle=\"dropdown\" id=\"stateChangeButton\">"
-						+ "---Idea States--- <span class=\"caret\"></span></button>");
-				out.print("&nbsp;&nbsp;");
-				out.print("<ul class=\"dropdown-menu\">");
-				List<String> items = IdeaDAO.getIdeaStates();
-				for (String item : items) {
-					out.print("<li><a href=\"#\">" + item + "</a></li>");
+				if (UserDAO.isReviewer(user)) {
+					out.print("&nbsp;&nbsp;");
+					out.print(
+							"<button class=\"pull-right btn btn-primary\" style=\"margin-top:-10px;\" onclick=\"ideaStateChange()\">Submit</button>");
+					out.print("&nbsp;&nbsp;");
+					out.print(
+							"<select class='pull-right btn btn-primary selectpicker' style='margin-top:-10px;' data-style='btn-primary' id='stateChangeButton'>");
+					out.print("&nbsp;&nbsp;");
+					List<String> items = IdeaDAO.getIdeaStates();
+					for (String item : items) {
+						out.print("<option>" + item + "</option>");
+					}
+					out.print("</select>");
+					out.print("&nbsp;&nbsp;");
+
 				}
-				out.print("</ul>");
-				out.print("</div>");
 
 			}
 			IdeaDetailDAO ideaDetail = new IdeaDetailDAO();
 			IdeaDetail idea = ideaDetail.getIdea(id);
 			if (user.getUserId() == idea.getPostedUserId()) {
+				out.print("<a href='/IdeaCreator/User/DeleteIdeaController?ideaId=" + id
+						+ "&rd=view' class=\"btn btn-primary\" style=\"margin-top: -10px;\"><span class=\"glyphicon glyphicon-trash\"></span>Delete</a>");
+				out.print("&nbsp;");
 				out.print("<a href=\"/IdeaCreator/User/editIdea.jsp?viewId=" + id
-						+ "\" class=\"btn btn-primary\" id=\"editIdea\"style=\"margin-top: -10px;\">"
+						+ "\" class=\"btn btn-primary\" id=\"editIdea\" style=\"margin-top: -10px;\">"
 						+ "<i class=\"glyphicon glyphicon-edit\" ></i>Edit</a>");
 			}
 			if (!UserDAO.alreadyVoted(user, id) && user.getUserId() != idea.getPostedUserId()) {
 				out.print("<button class=\"btn btn-primary\" id=\"ideaUpVote\"style=\"margin-top: -10px;\""
-						+ "onclick=\"ideaUpVote()\">WoW</button>");
+						+ "onclick=\"ideaUpVote()\">WOW</button>");
 			}
 		%>
 
 
-		<li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+		<li><a href="/IdeaCreator/User/homepage.jsp"><i class="fa fa-dashboard"></i> Home</a></li>
 		<li class="active">View Idea</li> &nbsp;&nbsp;
 	</ol>
 

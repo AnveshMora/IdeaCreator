@@ -14,7 +14,7 @@
 	<section class="content-header">
 	<h1>My Ideas</h1>
 	<ol class="breadcrumb">
-		<li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+		<li><a href="/IdeaCreator/User/homepage.jsp"><i class="fa fa-dashboard"></i> Home</a></li>
 		<li class="active">My Ideas</li>
 	</ol>
 	</section>
@@ -44,6 +44,7 @@
 										<th>Idea</th>
 										<th>Description</th>
 										<th>Status</th>
+										<th>Posted on</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -62,6 +63,7 @@
 											out.print("<td><a href=\"/IdeaCreator/User/viewIdea.jsp?viewId=" + idea.getIdea_Id() + "\">" + idea.getTitle() + "</a></td>");
 											out.print("<td>" + idea.getDescritpion() + "</td>");
 											out.print("<td>" + idea.getIdea_state() + "</td>");
+											out.print("<td>" + idea.getPostedOn() + "</td>");
 											out.print("</tr>");
 										}
 									%>

@@ -14,7 +14,7 @@
 	<section class="content-header">
 	<h1>My Ideas</h1>
 	<ol class="breadcrumb">
-		<li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+		<li><a href="/IdeaCreator/User/homepage.jsp"><i class="fa fa-dashboard"></i> Home</a></li>
 		<li class="active">My Ideas</li>
 	</ol>
 	</section>
@@ -27,6 +27,7 @@
 				<div class="box-header with-border">
 					<h3 class="box-title">Ideas Entered</h3>
 					<div class="box-tools pull-right">
+						<a href="/IdeaCreator/User/viewAllIdeas.jsp">View All</a>
 						<button class="btn btn-box-tool" data-widget="collapse">
 							<i class="fa fa-minus"></i>
 						</button>
@@ -44,27 +45,34 @@
 										<th>Idea</th>
 										<th>Description</th>
 										<th>Status</th>
-										<th>Action <a href="/IdeaCreator/User/viewAllIdeas.jsp">View All</a></th>
+										<th>Posted on</th>
+										<th>Action</th>
 									</tr>
 								</thead>
 								<tbody>
 									<%
 										IdeaDetailDAO ideasList = new IdeaDetailDAO();
-										UserInfo user = (UserInfo) session.getAttribute("loggedInUser");
-										List<IdeaDetail> list = null;
-										list = ideasList.getIdeas(Integer.toString(user.getUserId()));
-										if(list.size()<0){
-											out.print("<tr>No Ideas Retrieved/ Found!</tr>");
-										}
-										for (IdeaDetail idea : list) {
-											out.print("<tr>");
-											out.print("<td>"
-													+ idea.getIdea_Id() + "</td>");
-											out.print("<td><a href=\"/IdeaCreator/User/viewIdea.jsp?viewId=" + idea.getIdea_Id() + "\">" + idea.getTitle() + "</a></td>");
-											out.print("<td>" + idea.getDescritpion() + "</td>");
-											out.print("<td>" + idea.getIdea_state() + "</td>");
-											out.print("<td><span class=\"glyphicon glyphicon-trash\"" + "onclick=\"\"></span></td>");
-											out.print("</tr>");
+																	UserInfo user = (UserInfo) session.getAttribute("loggedInUser");
+																	List<IdeaDetail> list = null;
+																	list = ideasList.getIdeas(Integer.toString(user.getUserId()));
+																	if(list.size()<0){
+																		out.print("<tr>No Ideas Retrieved/ Found!</tr>");
+																	}
+																	for (IdeaDetail idea : list) {
+																		out.print("<tr>");
+																		out.print("<td>"
+																				+ idea.getIdea_Id() + "</td>");
+																		out.print("<td><a href=\"/IdeaCreator/User/viewIdea.jsp?viewId=" + idea.getIdea_Id() + "\">" + idea.getTitle() + "</a></td>");
+																		out.print("<td>" + idea.getDescritpion() + "</td>");
+																		out.print("<td>" + idea.getIdea_state() + "</td>");
+																		out.print("<td>" + idea.getPostedOn() + "</td>");
+																		out.print("<td><a href='/IdeaCreator/User/DeleteIdeaController?ideaId=" + idea.getIdea_Id()
+																				+ "&rd=my' class=\"btn btn-primary\" title='Delete Idea'><span class=\"glyphicon glyphicon-trash\"></span></a></td>");
+																		
+																		out.print("<td><a href=\"/IdeaCreator/User/editIdea.jsp?viewId=" + idea.getIdea_Id()
+																				+ "\" class=\"btn btn-primary\" id=\"editIdea\" title='Edit Idea'>"
+																				+ "<i class=\"glyphicon glyphicon-edit\" ></i></a></td>");
+																		out.print("</tr>");
 										}
 									%>
 								</tbody>

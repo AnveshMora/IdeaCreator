@@ -23,7 +23,12 @@ import com.ideacreator.user.UserDAO;
 import com.ideacreator.user.UserInfo;
 
 public class SearchController extends HttpServlet {
-
+	
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		doPost(req, resp);
+	}
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// TODO Auto-generated method stub
@@ -34,13 +39,15 @@ public class SearchController extends HttpServlet {
 		String response = "";
 		if (ideaList.size() > 0)
 			response += "<table class=\"table table-striped\"> <thead>" + "<tr>" + "<th>S.No</th>" + "<th>Idea</th>"
-					+ "<th>Description</th>" + "</tr>" + "</thead><tbody>";
+					+ "<th>Description</th><th>Status</th> <th>Posted on</th>" + "</tr>" + "</thead><tbody>";
 		for (IdeaDetail ideaDetail : ideaList) {
 
 			response += "" + "<tr>" + "<td>" + ideaDetail.getIdea_Id() + "</td>"
 					+ "<td> <a href=\"/IdeaCreator/User/viewIdea.jsp?viewId=" + ideaDetail.getIdea_Id() + "\" >"
-					+ ideaDetail.getTitle() + "</a></td>" + "<td>" + ideaDetail.getDescritpion() + "</td>" + "</tr>";
-			// userNameList.add(rs.getString("user_name"));
+					+ ideaDetail.getTitle() + "</a></td>" + "<td>" + ideaDetail.getDescritpion() + "</td>" 
+					+"<td>" + ideaDetail.getIdea_state() + "</td>"
+					+"<td>" + ideaDetail.getPostedOn() + "</td>"+
+					"</tr>";
 		}
 		if (!response.isEmpty()) {
 			response += "</tbody></table>";

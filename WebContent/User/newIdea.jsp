@@ -105,16 +105,21 @@
 		}
 		return false;
 	}
+	
+	function callAttachment() {
+		var element = document.getElementById('myFile');
+		element.click();
+	}
 </script>
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
 	<!-- Content Header (Page header) -->
 	<section class="content-header">
 	<h1>
-		New Idea <small>#007612</small>
+		New Idea
 	</h1>
 	<ol class="breadcrumb">
-		<li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+		<li><a href="/IdeaCreator/User/homepage.jsp"><i class="fa fa-dashboard"></i> Home</a></li>
 		<li class="active">New Idea</li>
 	</ol>
 	</section>
@@ -138,11 +143,11 @@
 						<div class="alert alert-warning" id="alert-validation"
 							style="display: none; font-style: normal;"></div>
 						<input type="text" name="qTitle" id="qTitle" class="form-control"
-							placeholder="Title" width="100%" onblur="ideaValidation()">
+							placeholder="Title" width="100%">
 						<br />
 						<textarea name="qDescription" id="qDescription"
 							class="form-control" rows='4' cols='50' size='75px'
-							placeholder="Description" onblur="ideaValidation()"></textarea>
+							placeholder="Description"></textarea>
 
 					</div>
 
@@ -165,8 +170,12 @@
 
 				<div class="row">
 					<div class="col">
-						<input type="file" id="myFile" multiple size="50"
-							onchange="myFunction()">
+						<input type="file" id="myFile" size="50" onchange="myFunction()"
+							style="visibility: hidden;" multiple>
+						<button class="btn btn-primary" id="ideaUpVote"
+							onclick="return callAttachment()">
+							<b>+</b>
+						</button>
 
 						<p id="progress"></p>
 						<div id="attachments" />
@@ -180,8 +189,8 @@
 		<section class="invoice">
 		<div class="row">
 			<div class="col-xs-12">
-				<button onclick="return ideaValidation()">Save</button>
-				<button data-toggle="modal" data-target="#reviewerDialog"
+				<button class="btn btn-primary" onclick="return ideaValidation()">Save</button>
+				<button class="btn btn-primary" data-toggle="modal" data-target="#reviewerDialog"
 					onclick="ideaValidation()">Submit For Review</button>
 				<!-- Modal -->
 				<div id="reviewerDialog" class="modal fade" role="dialog">
@@ -194,7 +203,10 @@
 								<h4 class="modal-title">Modal Header</h4>
 							</div>
 							<div class="modal-body">
-								<input type="text" id="addReviewIds" paceholder="(Optional)Enter Additional Peer Reviewers Name" class="form-control"/>
+								<input type="text" name="qAddReviewIds" id="qAddReviewIds"
+									class="form-control" placeholder="(Optional) Enter Peer Reviewers">
+								<label>Selected Peers :</label>
+								<small><i>* Defaul Reviewers will be notifed!</i></small>
 							</div>
 							<div class="modal-footer">
 								<button type="button" class="btn btn-default"

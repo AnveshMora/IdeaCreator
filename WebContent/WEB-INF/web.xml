@@ -93,6 +93,36 @@
 		<url-pattern>/User/ViewIdeaController</url-pattern>
 	</servlet-mapping>
 	
+	<servlet>
+		<servlet-name>DeleteIdeaController</servlet-name>
+		<servlet-class>com.ideacreator.idea.deleteidea.DeleteIdeaController</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>DeleteIdeaController</servlet-name>
+		<url-pattern>/User/DeleteIdeaController</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>AutoUserController</servlet-name>
+		<servlet-class>com.ideacreator.search.user.AutoUserController</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>AutoUserController</servlet-name>
+		<url-pattern>/User/AutoUserController</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>ProfileController</servlet-name>
+		<servlet-class>com.ideacreator.profile.ProfileController</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>ProfileController</servlet-name>
+		<url-pattern>/User/ProfileController</url-pattern>
+	</servlet-mapping>
+	
 	<filter>
 		<filter-name>LoginFilter</filter-name>
 		<filter-class>com.ideacreator.login.filter.LoginFilter</filter-class>

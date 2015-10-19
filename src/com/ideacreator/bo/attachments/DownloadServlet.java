@@ -29,7 +29,7 @@ public class DownloadServlet extends HttpServlet {
 		response.setContentType("APPLICATION/OCTET-STREAM");
 		response.setHeader("Content-Disposition", "attachment; filename=\"" + filename + "\"");
 
-		FileInputStream fileInputStream = new FileInputStream(filePath + user.getUserId()+filename);
+		FileInputStream fileInputStream = new FileInputStream(filePath + filename);
 
 		int i;
 		while ((i = fileInputStream.read()) != -1) {

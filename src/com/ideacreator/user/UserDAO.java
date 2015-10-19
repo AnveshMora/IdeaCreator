@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.ideacreator.connection.DataManager;
 import com.ideacreator.constants.DataBaseConstants;
 import com.ideacreator.constants.UserRoles;
@@ -48,6 +50,9 @@ public class UserDAO {
 					userDetails.setUserName(rs.getString("user_name"));
 					userDetails.setEmailId(rs.getString("email_id"));
 					userDetails.setRoleId(rs.getInt("role_id"));
+					userDetails.setFirstName(rs.getString("first_name"));
+					userDetails.setLastName(rs.getString("last_name"));
+					userDetails.setPhone(rs.getString("mobile_no"));
 				}
 				return userDetails;
 			}
@@ -95,5 +100,29 @@ public class UserDAO {
 			}
 		}
 		return false;
+	}
+	
+	public JsonArray getUsersArray(){
+		JsonArray userDetails = new JsonArray();
+		DataManager driver = new DataManager();
+		try {
+			driver.createConnection();
+			Connection con = driver.getConnection();
+			PreparedStatement st = con.prepareStatement(DataBaseConstants.QUERY_ALL_USER_DETAILS);
+			if (st.execute()) {
+				ResultSet rs = st.getResultSet();
+				while (rs.next()) {
+					JsonObject obj= new JsonObject();
+					obj.addProperty("userId", rs.getString("user_id"));
+					obj.addProperty("userName", rs.getString("user_name"));
+					userDetails.add(obj);
+				}
+				return userDetails;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 }

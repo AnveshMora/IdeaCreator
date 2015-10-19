@@ -26,7 +26,12 @@ function checkLogin() {
 <body onload="checkLogin()">
 	<form method="post" action="LoginController">
 		<br /> <br /> <br /> <br /> <br /> <br /> <br /> <br />
-		<div class="login-wrap">
+		<table style="margin-left: 13%;">
+		<tr style="background-color: #ECF0F1"><td >
+		<img src="/IdeaCreator/dist/img/ATeam_FinalLogoTotal.png" style="height:310px;">
+		</td>
+		<td>
+		<div class="login-wrap" >
 			<h2>Login</h2>
 			<br />
 			<%
@@ -41,13 +46,16 @@ function checkLogin() {
 				out.print("</div>");
 			%>
 
-			<div class="form">
+			<div class="form" >
 				<input type="text" placeholder="Username" name="un" id="un" /> <input
 					type="password" placeholder="Password" name="pw" id="pw" />
 				<button id="submit">Log in</button>
 
 			</div>
 		</div>
+		</td>
+		</tr>
+		</table>
 	</form>
 	<script src='http://codepen.io/assets/libs/fullpage/jquery.js'></script>
 

@@ -1,17 +1,22 @@
+<%@page import="java.util.Iterator"%>
+<%@page import="com.ideacreator.ideadetails.IdeaDetail"%>
+<%@page import="java.util.List"%>
+<%@page import="com.ideacreator.ideadetails.IdeaDetailDAO"%>
 <%@page import="com.ideacreator.user.UserInfo"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<title><%=((UserInfo)session.getAttribute("loggedInUser")).getUserName() %>|
+<title><%=((UserInfo) session.getAttribute("loggedInUser")).getUserName()%>|
 	Dashboard</title>
 <!-- Tell the browser to be responsive to screen width -->
 <meta
 	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
 	name="viewport">
 <!-- Bootstrap 3.3.5 -->
-<link rel="stylesheet" href="/IdeaCreator/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="/IdeaCreator/bootstrap/css/bootstrap.min.css">
 <!-- Font Awesome -->
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
@@ -25,7 +30,8 @@
 <link rel="stylesheet" href="/IdeaCreator/dist/css/AdminLTE.min.css">
 <!-- AdminLTE Skins. Choose a skin from the css/skins
          folder instead of downloading all of them to reduce the load. -->
-<link rel="stylesheet" href="/IdeaCreator/dist/css/skins/_all-skins.min.css">
+<link rel="stylesheet"
+	href="/IdeaCreator/dist/css/skins/_all-skins.min.css">
 
 <link rel="stylesheet" href="/IdeaCreator/css/bubble-style.css">
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -34,34 +40,36 @@
         <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+    
+    
+ 
+<link id="bsdp-css" href="/IdeaCreator/bootstrap-datepicker/css/datepicker3.css"
+	rel="stylesheet">
+<script src="/IdeaCreator/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
 <script type="text/javascript">
-function checkLogin() {
-	
-	<%
-
-	if(session.getAttribute("loggedInUser")==null){
-		out.print("alert(\"redirecting to HomePage!\")");
-		response.sendRedirect("login.jsp");
+	function checkLogin() {
+<%if (session.getAttribute("loggedInUser") == null) {
+				out.print("alert(\"redirecting to HomePage!\")");
+				response.sendRedirect("login.jsp");
+			}%>
 	}
-	%>
-}
 
-function searchIdea() {
-	
-	var xhttp = new XMLHttpRequest();
-	var formData = new FormData();
-	var title = document.getElementById("qTitle").value;
-	var desc = document.getElementById("qDescription").value;
-	if (title !=undefined)
-		formData.append("title", title);
-	xhttp.onreadystatechange = function() {
-		if (xhttp.readyState == 4 && xhttp.status == 200) {
-			document.getElementById("searchResult").innerHTML = xhttp.responseText;
+	function searchIdea() {
+
+		var xhttp = new XMLHttpRequest();
+		var formData = new FormData();
+		var title = document.getElementById("qTitle").value;
+		var desc = document.getElementById("qDescription").value;
+		if (title != undefined)
+			formData.append("title", title);
+		xhttp.onreadystatechange = function() {
+			if (xhttp.readyState == 4 && xhttp.status == 200) {
+				document.getElementById("searchResult").innerHTML = xhttp.responseText;
+			}
 		}
+		xhttp.open("POST", "SearchController", true);
+		xhttp.send(formData);
 	}
-	xhttp.open("POST", "SearchController", true);
-	xhttp.send(formData);
-}
 </script>
 <script src="//code.jquery.com/jquery-1.10.2.js"></script>
 <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
@@ -70,14 +78,28 @@ function searchIdea() {
 <body class="hold-transition skin-yellow layout-boxed sidebar-mini"
 	onload="checkLogin()">
 	<div class="wrapper">
-
 		<header class="main-header">
-
 			<!-- Logo -->
-			<a href="/IdeaCreator/User/homepage.jsp" class="logo"> <!-- logo for regular state and mobile devices -->
-				<span class="logo-lg"><b>IDEA</b>Creator</span>
-			</a>
-
+			<a href="/IdeaCreator/User/homepage.jsp" > <!-- logo for regular state and mobile devices -->
+			
+			
+<div class="logo">
+					<div class="pull-left image" >
+						<img src="/IdeaCreator/dist/img/ATeam_FinalLogoOnly.png"
+							 class="img-circle" alt="Logo" style="width: 50px;height: 50px;margin-left:-15px; margin-top:5px">
+					</div>
+					<div>
+						<span ><sup style="font-size: 30px; top:12px;left:-50px">
+										<span style="color:#fc9027;">i</span>deaPlug
+								</sup>
+						</span>
+						
+						<span class="logo-lg" style="">
+						<sub style=" font-size: 15px;top:23px;left:-24px"><font color=black>plug your <font style="color:#fc9027;">ideas</font> to</font> Model N</sub>
+						</span>
+					</div>
+				</div>
+				</a>
 			<!-- Header Navbar: style can be found in header.less -->
 			<nav class="navbar navbar-static-top" role="navigation">
 				<!-- Sidebar toggle button-->
@@ -100,8 +122,8 @@ function searchIdea() {
 										<li>
 											<!-- start message --> <a href="#">
 												<div class="pull-left">
-													<img src="/IdeaCreator/dist/img/user2-160x160.jpg" class="img-circle"
-														alt="User Image">
+													<img src="/IdeaCreator/dist/img/user2-160x160.jpg"
+														class="img-circle" alt="User Image">
 												</div>
 												<h4>
 													Support Team <small><i class="fa fa-clock-o"></i> 5
@@ -133,52 +155,77 @@ function searchIdea() {
 								<li class="footer"><a href="#">View all</a></li>
 							</ul></li>
 						<!-- Tasks: style can be found in dropdown.less -->
+						<%
+							UserInfo user = (UserInfo) session.getAttribute("loggedInUser");
+							List<IdeaDetail> ideas = IdeaDetailDAO.getFlaggedIdeas(user.getUserId());
+						%>
 						<li class="dropdown tasks-menu"><a href="#"
-							class="dropdown-toggle" data-toggle="dropdown"> <i
-								class="fa fa-flag-o"></i> <span class="label label-danger">9</span>
-						</a>
-							<ul class="dropdown-menu">
-								<li class="header">You have 9 Flaged Ideas</li>
-								<li>
-									<!-- inner menu: contains the actual data -->
-									<ul class="menu">
-										<li>
-											<!-- Task item --> <a href="#">
-												<h3>
-													Design some buttons <small class="pull-right">20%</small>
-												</h3>
-												<div class="progress xs">
-													<div class="progress-bar progress-bar-aqua"
-														style="width: 20%" role="progressbar" aria-valuenow="20"
-														aria-valuemin="0" aria-valuemax="100">
-														<span class="sr-only">20% Complete</span>
-													</div>
-												</div>
-										</a>
-										</li>
-										<!-- end task item -->
-									</ul>
-								</li>
-								<li class="footer"><a href="#">View all Flaged Ideas</a></li>
-							</ul></li>
+							class="dropdown-toggle" data-toggle="dropdown"
+							data-target="#flaggedIdeas"> <i class="fa fa-flag-o"></i> <span
+								class="label label-danger"><%=ideas.size()%></span>
+						</a></li>
+						<div id="flaggedIdeas" class="modal fade" role="dialog">
+							<div class="modal-dialog">
+
+								<!-- Modal content-->
+								<div class="modal-content">
+									<div class="modal-header">
+										<button type="button" class="close" data-dismiss="modal">&times;</button>
+										<h4 class="modal-title">Modal Header</h4>
+									</div>
+									<div class="modal-body">
+										<%
+											Iterator it = ideas.iterator();
+											out.print("<div class='box-body'><!-- Table row -->" + "<div class='row'>"
+													+ "<div class='col-xs-12 table-responsive'>" + "<table class='table table-striped'>" + "<thead>");
+											if (!it.hasNext()) {
+												out.print("<tr>No Ideas Flagged</tr>");
+											} else {
+												out.print(
+														"<tr><th>Idea No</th><th>Idea</th><th>Description</th><th>Status</th><th>Posted on</th></tr></thead><tbody>");
+												for (IdeaDetail idea : ideas) {
+
+													out.print("<tr>");
+													out.print("<td>" + idea.getIdea_Id() + "</td>");
+													out.print("<td><a href=\"/IdeaCreator/User/viewIdea.jsp?viewId=" + idea.getIdea_Id() + "\">"
+															+ idea.getTitle() + "</a></td>");
+													out.print("<td>" + idea.getDescritpion() + "</td>");
+													out.print("<td>" + idea.getIdea_state() + "</td>");
+													out.print("<td>" + idea.getPostedOn() + "</td>");
+													out.print("</tr>");
+
+												}
+											}
+
+											out.print("</tbody></table></div><!-- /.col --></div><!-- /.row --></div>");
+										%>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-default"
+											data-dismiss="modal">Close</button>
+									</div>
+								</div>
+							</div>
+						</div>
 						<!-- User Account: style can be found in dropdown.less -->
 						<li class="dropdown user user-menu"><a href="#"
 							class="dropdown-toggle" data-toggle="dropdown"> <img
 								src="/IdeaCreator/dist/img/user2-160x160.jpg" class="user-image"
-								alt="User Image"> <span class="hidden-xs"><%=((UserInfo)session.getAttribute("loggedInUser")).getUserName() %></span>
+								alt="User Image"> <span class="hidden-xs"><%=((UserInfo) session.getAttribute("loggedInUser")).getUserName()%></span>
 						</a>
 							<ul class="dropdown-menu">
 								<!-- User image -->
 								<li class="user-header"><img
-									src="/IdeaCreator/dist/img/user2-160x160.jpg" class="img-circle"
-									alt="User Image">
+									src="/IdeaCreator/dist/img/user2-160x160.jpg"
+									class="img-circle" alt="User Image">
 									<p>
-										<%=((UserInfo)session.getAttribute("loggedInUser")).getUserName() %>
+										<%=((UserInfo) session.getAttribute("loggedInUser")).getUserName()%>
 									</p></li>
 								<!-- Menu Footer-->
 								<li class="user-footer">
 									<div class="pull-left">
-										<a href="#" class="btn btn-default btn-flat">Profile</a>
+										<a href="/IdeaCreator/User/Profile.jsp"
+											class="btn btn-default btn-flat">Profile</a>
 									</div>
 									<div class="pull-right">
 										<a href="/IdeaCreator/LogOutController"
@@ -198,11 +245,11 @@ function searchIdea() {
 				<!-- Sidebar user panel -->
 				<div class="user-panel">
 					<div class="pull-left image">
-						<img src="/IdeaCreator/dist/img/user2-160x160.jpg" class="img-circle"
-							alt="User Image">
+						<img src="/IdeaCreator/dist/img/user2-160x160.jpg"
+							class="img-circle" alt="User Image">
 					</div>
 					<div class="pull-left info">
-						<p><%=((UserInfo)session.getAttribute("loggedInUser")).getUserName() %></p>
+						<p><%=((UserInfo) session.getAttribute("loggedInUser")).getUserName()%></p>
 					</div>
 				</div>
 				<!-- search form -->
@@ -221,21 +268,38 @@ function searchIdea() {
 				<!-- sidebar menu: : style can be found in sidebar.less -->
 				<ul class="sidebar-menu">
 					<li class="header">MAIN NAVIGATION</li>
-					<%String uri=request.getRequestURI();
-					uri=uri.substring(uri.lastIndexOf('/'));%>
-					<li class="<%if(uri.equals("/homepage.jsp")) out.print("active "); %>treeview"><a href="/IdeaCreator/User/homepage.jsp"> <i
+					<%
+						String uri = request.getRequestURI();
+						uri = uri.substring(uri.lastIndexOf('/'));
+					%>
+					<li
+						class="<%if (uri.equals("/homepage.jsp"))
+				out.print("active ");%>treeview"><a
+						href="/IdeaCreator/User/homepage.jsp"> <i
 							class="fa fa-dashboard"></i> <span>Dashboard</span>
 					</a></li>
-					<li class="<%if(uri.equals("/newIdea.jsp")) out.print("active "); %>treeview"><a href="/IdeaCreator/User/newIdea.jsp"> <i
+					<li
+						class="<%if (uri.equals("/newIdea.jsp"))
+				out.print("active ");%>treeview"><a
+						href="/IdeaCreator/User/newIdea.jsp"> <i
 							class="fa fa-dashboard"></i> <span>New Idea</span>
 					</a></li>
-					<li class="<%if(uri.equals("/MyIdeas.jsp")) out.print("active "); %>treeview"><a href="/IdeaCreator/User/MyIdeas.jsp"> <i
+					<li
+						class="<%if (uri.equals("/MyIdeas.jsp"))
+				out.print("active ");%>treeview"><a
+						href="/IdeaCreator/User/MyIdeas.jsp"> <i
 							class="fa fa-dashboard"></i> <span>My Ideas</span>
 					</a></li>
-					<li class="<%if(uri.equals("/searchIdea.jsp")) out.print("active "); %>treeview"><a href="/IdeaCreator/User/searchIdea.jsp"> <i
+					<li
+						class="<%if (uri.equals("/searchIdea.jsp"))
+				out.print("active ");%>treeview"><a
+						href="/IdeaCreator/User/searchIdea.jsp"> <i
 							class="fa fa-dashboard"></i> <span>Search Idea</span>
 					</a></li>
-					<li class="<%if(uri.equals("/viewAllIdeas.jsp")) out.print("active "); %>treeview"><a href="/IdeaCreator/User/viewAllIdeas.jsp"> <i
+					<li
+						class="<%if (uri.equals("/viewAllIdeas.jsp"))
+				out.print("active ");%>treeview"><a
+						href="/IdeaCreator/User/viewAllIdeas.jsp"> <i
 							class="fa fa-dashboard"></i> <span>View All Ideas</span>
 					</a></li>
 				</ul>

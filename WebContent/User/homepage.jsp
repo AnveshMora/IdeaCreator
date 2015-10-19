@@ -147,6 +147,8 @@
 										<th>Idea No.</th>
 										<th>Title</th>
 										<th>Description</th>
+										<th>Status</th>
+										<th>Posted On</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -163,6 +165,8 @@
 													+ idea.getIdea_Id() + "</td>");
 											out.print("<td><a href=\"/IdeaCreator/User/viewIdea.jsp?viewId=" + idea.getIdea_Id() + "\">" + idea.getTitle() + "</a></td>");
 											out.print("<td>" + idea.getDescritpion() + "</td>");
+											out.print("<td>" + idea.getIdea_state() + "</td>");
+											out.print("<td>" + idea.getPostedOn() + "</td>");
 											out.print("</tr>");
 										}
 									%>
